@@ -49,7 +49,7 @@ export const JoinServerModal = ({ server }: JoinServerModalProps) => {
 
   return (
     <Dialog open onOpenChange={handleClose}>
-      <DialogContent className="bg-[#313338]  p-0 overflow-hidden">
+      <DialogContent className="bg-[#313338] max-w-lg  p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             You have been invited to join server {server?.name}

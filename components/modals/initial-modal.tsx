@@ -57,10 +57,10 @@ export const InitialModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-    await axios.post("/api/servers", values);
-    form.reset();
-    router.refresh();
-    window.location.reload();
+      await axios.post("/api/servers", values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +68,7 @@ export const InitialModal = () => {
   if (!isMounted) return null;
   return (
     <Dialog open>
-      <DialogContent className="bg-white dark:bg-[#313338] text-black dark:text-white p-0 overflow-hidden">
+      <DialogContent className="bg-white dark:bg-[#313338] max-w-lg text-black dark:text-white p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Customize your server

@@ -102,7 +102,7 @@ export const InviteModal = () => {
   };
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="dark:bg-[#313338] bg-white p-0 overflow-hidden">
+      <DialogContent className="dark:bg-[#313338] max-w-lg bg-white p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Invite Friends
