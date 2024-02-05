@@ -19,11 +19,13 @@ import {
   Crown,
   Gavel,
   Loader2,
+  MessageCircle,
   MoreVertical,
   Shield,
   ShieldCheck,
   ShieldQuestion,
   User,
+  User2,
 } from "lucide-react";
 
 import {
@@ -121,10 +123,18 @@ export const MembersModal = () => {
                 loadingId !== member.id && (
                   <div className="ml-auto">
                     <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <MoreVertical className="h-4 w-4 dark:text-gray-500 text-black cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0" />
+                      <DropdownMenuTrigger className="ring-0 outline-none">
+                        <MoreVertical className="h-4 w-4 dark:text-gray-500 text-black cursor-pointer" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left">
+                        <DropdownMenuItem>
+                          <User2 className="h-4 w-4 mr-2" />
+                          Profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Message
+                        </DropdownMenuItem>
                         <DropdownMenuSub>
                           <DropdownMenuSubTrigger className="flex items-center">
                             <ShieldQuestion className="h-4 w-4 mr-2" />

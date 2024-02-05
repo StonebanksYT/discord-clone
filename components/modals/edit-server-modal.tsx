@@ -22,6 +22,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,7 +52,26 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { MembersModal } from "./members-modal";
+import { ServerWithMembersWithProfiles } from "@/types";
+import {
+  Check,
+  Crown,
+  Gavel,
+  MessageCircle,
+  MoreVertical,
+  Shield,
+  ShieldCheck,
+  ShieldQuestion,
+  Trash2,
+  Hash,
+  User,
+  User2,
+} from "lucide-react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { UserAvatar } from "../user-avatar";
+import qs from "query-string";
+import { MemberRole } from "@prisma/client";
+import { Separator } from "../ui/separator";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -40,20 +81,167 @@ const formSchema = z.object({
     message: "Server image is required",
   }),
 });
+const roleIconMap = {
+  ADMIN: <Crown className="h-8 w-8 ml-2 text-rose-500" />,
+  MODERATOR: <ShieldCheck className="h-8 w-8 ml-2 text-indigo-500" />,
+  GUEST: <User className="h-8 w-8 ml-2 text-gray-500" />,
+};
+
+interface MembersManagementProps {
+  server: ServerWithMembersWithProfiles;
+}
+const MembersManagement = ({ server }: MembersManagementProps) => {
+  const router = useRouter();
+  const [loadingId, setLoadingId] = useState("");
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+      const response = await axios.delete(url);
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+  const onRoleChange = async (memberId: string, role: MemberRole) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+      const response = await axios.patch(url, { role });
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+  return (
+    <div className="">
+      <Table>
+        <TableCaption>Manage Members in {server.name}</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Name</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead className="text-right">Member Since</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {server?.members?.map((member) => (
+            <TableRow
+              key={member.id}
+              className="flex items-center gap-x-2 mb-6"
+            >
+
+              <TableCell className="font-medium flex">
+              <UserAvatar src={member.profile.imageUrl} />
+                {member.profile.name}
+                {roleIconMap[member.role]}
+              </TableCell>
+              <TableCell>{member.role}</TableCell>
+              <TableCell>{member.createdAt.toUTCString()}</TableCell>
+              <TableCell className="w-full ml-auto">
+                {server?.profileId !== member.profileId &&
+                  loadingId !== member.id && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="ring-0 outline-none">
+                        <MoreVertical className="h-6 w-6 dark:text-gray-500 text-black cursor-pointer" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="left">
+                        <DropdownMenuItem>
+                          <User2 className="h-4 w-4 mr-2" />
+                          Profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Message
+                        </DropdownMenuItem>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger className="flex items-center">
+                            <ShieldQuestion className="h-4 w-4 mr-2" />
+                            <span>Roles</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                onClick={() => onRoleChange(member.id, "GUEST")}
+                              >
+                                <Shield className="h-4 w-4 mr-2" />
+                                GUEST
+                                {member.role === "GUEST" && (
+                                  <Check className="h-4 w-4 ml-2" />
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  onRoleChange(member.id, "MODERATOR")
+                                }
+                              >
+                                <ShieldCheck className="h-4 w-4 mr-2" />
+                                MODERATOR
+                                {member.role === "MODERATOR" && (
+                                  <Check className="h-4 w-4 ml-2" />
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            onKick(member.id);
+                          }}
+                          className="text-rose-500"
+                        >
+                          <Gavel className="h-4 w-4 mr-2" />
+                          Kick {member.profile.name}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        {/* <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell className="text-right">$2,500.00</TableCell>
+            </TableRow>
+          </TableFooter> */}
+      </Table>
+    </div>
+  );
+};
 
 export const EditServerModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data, onOpen } = useModal();
   const isModalOpen = isOpen && type === "editServer";
   const { server } = data;
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
 
-  const tabs = [
-    { name: "Overview" },
-    { name: "Roles" },
-    { name: "Channels" },
-    { name: "Members" },
-  ];
+  // const tabs = [
+  //   { name: "Overview" },
+  //   { name: "Roles" },
+  //   { name: "Channels" },
+  //   { name: "Members" },
+
+  // ];
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -92,28 +280,83 @@ export const EditServerModal = () => {
           <div className="w-full flex flex-col pr-14 mt-16 h-full font-semibold uppercase items-end">
             {server?.name}
             <div className="flex flex-col font-normal h-full items-start  mt-4">
-              {tabs.map((tab, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTab(index)}
-                  className={cn(
-                    "text-sm font-semibold text-left text-black dark:text-neutral-400 py-2 px-6 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
+              <button
+                onClick={() => setActiveTab(0)}
+                className={cn(
+                  "text-sm font-semibold text-left text-black dark:text-neutral-400 py-2 px-1 mt-1 w-[150px] hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
 
-                    activeTab === index &&
-                      "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
-                  )}
-                >
-                  {tab.name}
-                </button>
-              ))}
+                  activeTab === 0 &&
+                    "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
+                )}
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setActiveTab(1)}
+                className={cn(
+                  "text-sm font-semibold text-left text-black dark:text-neutral-400 py-2 px-1 mt-1 w-[150px] hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
+
+                  activeTab === 1 &&
+                    "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
+                )}
+              >
+                <div className="flex w-full justify-between">
+                  Roles
+                  <ShieldQuestion className="h-4 w-4 " />
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab(2)}
+                className={cn(
+                  "text-sm font-semibold text-left text-black justify-between dark:text-neutral-400 py-2 px-1 mt-1 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
+
+                  activeTab === 2 &&
+                    "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
+                )}
+              >
+                <div className="flex w-full justify-between">
+                  Channels
+                  <Hash className="h-4 w-4 " />
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab(3)}
+                className={cn(
+                  "text-sm font-semibold text-left text-black justify-between dark:text-neutral-400 py-2 px-1 mt-1 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
+
+                  activeTab === 3 &&
+                    "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
+                )}
+              >
+                <div className="flex w-full justify-between">
+                  Members
+                  <User className="h-4 w-4 " />
+                </div>
+              </button>
+              <Separator />
+              <button
+                onClick={() => {
+                  onOpen("deleteServer", { server });
+                  // handleClose();
+                }}
+                className={cn(
+                  "text-sm font-semibold text-left text-black justify-between dark:text-neutral-400 py-2 px-1 mt-1 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
+
+                  activeTab === 4 &&
+                    "bg-zinc-300 dark:bg-[#36373d]  dark:text-white"
+                )}
+              >
+                <div className="flex w-full justify-between text-rose-500">
+                  Delete Server
+                  <Trash2 className="h-4 w-4 text-rose-500 " />
+                </div>
+              </button>
             </div>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center  w-full h-full">
           <DialogHeader className="pt-8 px-6">
-            <DialogTitle className="text-2xl text-start font-bold">
-              {tabs[activeTab].name}
-            </DialogTitle>
+            <DialogTitle className="text-2xl text-start font-bold"></DialogTitle>
           </DialogHeader>
 
           {activeTab === 0 && (
@@ -186,8 +429,10 @@ export const EditServerModal = () => {
             </div>
           )}
           {activeTab === 3 && (
-            <div className="flex flex-row items-center justify-center w-full h-full z-0">
-              
+            <div className="flex flex-row justify-center w-full h-full">
+              <MembersManagement
+                server={server as ServerWithMembersWithProfiles}
+              />
             </div>
           )}
         </div>
