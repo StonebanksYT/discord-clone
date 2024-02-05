@@ -7,7 +7,7 @@ import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserButton } from "@clerk/nextjs";
-
+import { dark } from "@clerk/themes";
 export const NavigationSidebar = async () => {
   const profile = await CurrentProfile();
   if (!profile) {
@@ -39,14 +39,15 @@ export const NavigationSidebar = async () => {
         ))}
       </ScrollArea>
       <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
-        <ThemeToggle/>
+        <ThemeToggle />
         <UserButton
-        afterSignOutUrl="/"
-        appearance={{
-            elements:{
-                avatarBox:"h-[48px] w-[48px]"
-            }
-        }}
+          afterSignOutUrl="/"
+          appearance={{
+            baseTheme: dark,
+            elements: {
+              avatarBox: "h-[48px] w-[48px]",
+            },
+          }}
         />
       </div>
     </div>

@@ -27,7 +27,7 @@ export const JoinServerModal = ({ server }: JoinServerModalProps) => {
 
   //   const { server } = data;
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(server?.name);
   const onNew = async () => {
     try {
       setIsLoading(true);
@@ -56,7 +56,7 @@ export const JoinServerModal = ({ server }: JoinServerModalProps) => {
           </DialogTitle>
         </DialogHeader>
         <div className="flex w-full  justify-center">
-          <Image
+          <img
             src={server?.imageUrl}
             alt={server?.name}
             width={100}
