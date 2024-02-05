@@ -22,21 +22,6 @@ const ServerIdLayout = async ({
     where: {
       id: params.serverId,
     },
-    include: {
-      channels: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-      members: {
-        include: {
-          profile: true,
-        },
-        orderBy: {
-          role: "asc",
-        },
-      },
-    },
   });
   if (!server) {
     return redirect("/");
@@ -47,12 +32,12 @@ const ServerIdLayout = async ({
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerSidebar serverId={params.serverId} />
       </div>
-      <div className="hidden md:flex h-12 w-full z-30 flex-col fixed left-[312px] inset-y-0 border-b">
-        <ServerTopbar />
+      <div className="hidden md:flex h-12 w-full z-10 flex-col fixed right-0 inset-y-0 border-b">
+        <ServerTopbar serverId={params.serverId} />
       </div>
       <main className="h-full md:pl-60 mt-[50px]">{children}</main>
       <div className="hidden md:flex h-full w-60 z-20 flex-col right-0 fixed top-12 inset-y-0">
-        <MemberSidebar server={server} />
+        <MemberSidebar serverId={params.serverId} />
       </div>
     </div>
   );

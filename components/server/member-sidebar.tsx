@@ -14,9 +14,11 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
 interface MemberSidebarProps {
-  server: ServerWithMembersWithProfiles;
+  serverId: string;
   role?: MemberRole;
 }
 
@@ -25,7 +27,30 @@ const roleIconMap = {
   MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   GUEST: <User className="h-5 w-5 ml-2 text-gray-500" />,
 };
-const MemberSidebar = ({ server, role }: MemberSidebarProps) => {
+const MemberSidebar = async ({ serverId, role }: MemberSidebarProps) => {
+  const server = await db.server.findUnique({
+    where: {
+      id: serverId,
+    },
+    include: {
+      channels: {
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+      members: {
+        include: {
+          profile: true,
+        },
+        orderBy: {
+          role: "asc",
+        },
+      },
+    },
+  });
+  if (!server) {
+    return redirect("/");
+  }
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       {server.members.map((member) => (
