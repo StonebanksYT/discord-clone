@@ -109,63 +109,86 @@ export const CreateChannelModal = () => {
                         onValueChange={field.onChange}
                       >
                         <FormItem>
-                          <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
-                            <Hash className="h-5 w-5 mr-2 ml-2" />
-                            <div>
-                              <FormLabel>
+                          <label
+                            htmlFor={ChannelType.TEXT}
+                            className="cursor-pointer"
+                          >
+                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                              <Hash className="h-5 w-5 mr-2 ml-2" />
+                              <FormLabel
+                                htmlFor={ChannelType.TEXT}
+                                className="cursor-pointer"
+                              >
                                 Text
                                 <p className="text-sm text-gray-300">
-                                  Send messages,images,GIFs,emoji,opinions and
-                                  puns
+                                  Send messages, images, GIFs, emoji, opinions,
+                                  and puns
                                 </p>
                               </FormLabel>
+                              <FormControl>
+                                <RadioGroupItem
+                                  id={ChannelType.TEXT}
+                                  className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  value={ChannelType.TEXT}
+                                />
+                              </FormControl>
                             </div>
-                            <FormControl>
-                              <RadioGroupItem
-                                className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
-                                value={ChannelType.TEXT}
-                              />
-                            </FormControl>
-                          </div>
+                          </label>
                         </FormItem>
+
                         <FormItem>
-                          <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
-                            <Volume2 className="h-5 w-5 mr-2 ml-2" />
-                            <div>
-                              <FormLabel>
+                          <label
+                            htmlFor={ChannelType.VOICE}
+                            className="cursor-pointer"
+                          >
+                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                              <Volume2 className="h-5 w-5 mr-2 ml-2" />
+                              <FormLabel
+                                htmlFor={ChannelType.VOICE}
+                                className="cursor-pointer"
+                              >
                                 Voice
                                 <p className="text-sm text-gray-300">
                                   Hang out together with voice and screen share
                                 </p>
                               </FormLabel>
+                              <FormControl>
+                                <RadioGroupItem
+                                  id={ChannelType.VOICE}
+                                  className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  value={ChannelType.VOICE}
+                                />
+                              </FormControl>
                             </div>
-                            <FormControl>
-                              <RadioGroupItem
-                                className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
-                                value={ChannelType.VOICE}
-                              />
-                            </FormControl>
-                          </div>
+                          </label>
                         </FormItem>
+
                         <FormItem>
-                          <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
-                            <Video className="h-5 w-5 mr-2 ml-2" />
-                            <div>
-                              <FormLabel>
+                          <label
+                            htmlFor={ChannelType.VIDEO}
+                            className="cursor-pointer"
+                          >
+                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                              <Video className="h-5 w-5 mr-2 ml-2" />
+                              <FormLabel
+                                htmlFor={ChannelType.VIDEO}
+                                className="cursor-pointer"
+                              >
                                 Video
                                 <p className="text-sm text-gray-300">
-                                  Hang out together with voice and video and
+                                  Hang out together with voice, video, and
                                   screen share
                                 </p>
                               </FormLabel>
+                              <FormControl>
+                                <RadioGroupItem
+                                  id={ChannelType.VIDEO}
+                                  className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  value={ChannelType.VIDEO}
+                                />
+                              </FormControl>
                             </div>
-                            <FormControl>
-                              <RadioGroupItem
-                                className="ml-auto focus-visible:ring-0 focus-visible:ring-offset-0"
-                                value={ChannelType.VIDEO}
-                              />
-                            </FormControl>
-                          </div>
+                          </label>
                         </FormItem>
                       </RadioGroup>
                     </FormControl>
