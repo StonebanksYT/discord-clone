@@ -48,9 +48,9 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     (channel) => channel.type === ChannelType.VIDEO
   );
 
-  const members = server?.members.filter(
-    (member) => member.profileId !== profile.id
-  );
+  // const members = server?.members.filter(
+  //   (member) => member.profileId !== profile.id
+  // );
 
   if (!server) {
     return redirect("/");
@@ -69,17 +69,50 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         {!!textChannels?.length && (
           <div className="mb-2 p-2">
             <ServerSection
-            sectionType="channels"
-            channelType={ChannelType.TEXT}
-            role={role}
-            label="Text Channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Text Channels"
             />
             {textChannels.map((channel) => (
               <ServerChannel
-              key={channel.id}
-              channel={channel}
-              server={server}
+                key={channel.id}
+                channel={channel}
+                server={server}
+                role={role}
+              />
+            ))}
+          </div>
+        )}
+        {!!voiceChannels?.length && (
+          <div className="mb-2 p-2">
+            <ServerSection
+              channelType={ChannelType.VOICE}
               role={role}
+              label="Voice Channels"
+            />
+            {voiceChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                server={server}
+                role={role}
+              />
+            ))}
+          </div>
+        )}
+        {!!videoChannels?.length && (
+          <div className="mb-2 p-2">
+            <ServerSection
+              channelType={ChannelType.VIDEO}
+              role={role}
+              label="Video Channels"
+            />
+            {videoChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                server={server}
+                role={role}
               />
             ))}
           </div>

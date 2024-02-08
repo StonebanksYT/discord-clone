@@ -9,7 +9,6 @@ import { useModal } from "@/hooks/use-modal-store";
 interface ServerSectionProps {
   label: string;
   role?: MemberRole;
-  sectionType: "channels" | "members";
   channelType: ChannelType;
   server?: ServerWithMembersWithProfiles;
 }
@@ -17,7 +16,6 @@ interface ServerSectionProps {
 export const ServerSection = ({
   label,
   role,
-  sectionType,
   channelType,
   server,
 }: ServerSectionProps) => {
@@ -27,13 +25,13 @@ export const ServerSection = ({
       <p className="text-xs uppercase font-semibold text-zinc-500 dark:text-zinc-400">
         {label}
       </p>
-      {role !== MemberRole.GUEST && sectionType=="channels" && (
+      {role !== MemberRole.GUEST  && (
         <ActionTooltip
         label="Create Channel"
         side="top"
         >
             <button 
-            onClick={()=>onOpen("createChannel")}
+            onClick={()=>onOpen("createChannel",{channelType})}
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition">
                 <Plus className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
             </button>

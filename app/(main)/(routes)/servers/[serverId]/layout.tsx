@@ -1,4 +1,4 @@
-import MemberSidebar from "@/components/server/member-sidebar";
+import MemberSidebar from "@/components/server/server-member-sidebar";
 import { ServerSidebar } from "@/components/server/server-sidebar";
 import ServerTopbar from "@/components/server/server-topbar";
 import { CurrentProfile } from "@/lib/current-profile";
@@ -36,7 +36,7 @@ const ServerIdLayout = async ({
         <ServerTopbar serverId={params.serverId} />
       </div>
       <main className="h-full md:pl-60 mt-[50px]">{children}</main>
-      <div className="hidden md:flex h-full w-60 z-20 flex-col right-0 fixed top-12 inset-y-0">
+      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed right-0  top-12 inset-y-0">
         <MemberSidebar serverId={params.serverId} />
       </div>
     </div>

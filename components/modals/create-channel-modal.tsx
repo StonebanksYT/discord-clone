@@ -31,6 +31,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { ChannelType } from "@prisma/client";
 import { Circle, Hash, Video, Volume2 } from "lucide-react";
 import qs from "query-string";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -45,8 +46,9 @@ const formSchema = z.object({
 });
 
 export const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const isModalOpen = isOpen && type === "createChannel";
+  const { channelType } = data;
   const router = useRouter();
   const params = useParams();
 
@@ -54,9 +56,17 @@ export const CreateChannelModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", ChannelType.TEXT);
+    }
+  }, [channelType, form]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -113,14 +123,14 @@ export const CreateChannelModal = () => {
                             htmlFor={ChannelType.TEXT}
                             className="cursor-pointer"
                           >
-                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                            <div className="flex w-full py-4 px-2 items-center bg-[#F2F3F5] dark:bg-[#2b2d31]  dark:hover:bg-[#43444b] rounded-md">
                               <Hash className="h-5 w-5 mr-2 ml-2" />
                               <FormLabel
                                 htmlFor={ChannelType.TEXT}
                                 className="cursor-pointer"
                               >
                                 Text
-                                <p className="text-sm text-gray-300">
+                                <p className="text-sm dark:text-gray-300">
                                   Send messages, images, GIFs, emoji, opinions,
                                   and puns
                                 </p>
@@ -141,14 +151,14 @@ export const CreateChannelModal = () => {
                             htmlFor={ChannelType.VOICE}
                             className="cursor-pointer"
                           >
-                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                            <div className="flex w-full py-4 px-2 items-center bg-[#F2F3F5] dark:bg-[#2b2d31]  dark:hover:bg-[#43444b] rounded-md">
                               <Volume2 className="h-5 w-5 mr-2 ml-2" />
                               <FormLabel
                                 htmlFor={ChannelType.VOICE}
                                 className="cursor-pointer"
                               >
                                 Voice
-                                <p className="text-sm text-gray-300">
+                                <p className="text-sm dark:text-gray-300">
                                   Hang out together with voice and screen share
                                 </p>
                               </FormLabel>
@@ -168,14 +178,14 @@ export const CreateChannelModal = () => {
                             htmlFor={ChannelType.VIDEO}
                             className="cursor-pointer"
                           >
-                            <div className="flex w-full py-4 px-2 items-center bg-[#2b2d31] hover:bg-[#43444b] rounded-md">
+                            <div className="flex w-full py-4 px-2 items-center bg-[#F2F3F5] dark:bg-[#2b2d31]  dark:hover:bg-[#43444b] rounded-md">
                               <Video className="h-5 w-5 mr-2 ml-2" />
                               <FormLabel
                                 htmlFor={ChannelType.VIDEO}
                                 className="cursor-pointer"
                               >
                                 Video
-                                <p className="text-sm text-gray-300">
+                                <p className="text-sm dark:text-gray-300">
                                   Hang out together with voice, video, and
                                   screen share
                                 </p>
