@@ -1,4 +1,4 @@
-import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatHeader } from "@/components/conversations/chat-header";
 import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";

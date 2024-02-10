@@ -24,7 +24,7 @@ export const ViewProfile = () => {
     return redirect("/");
   }
   const onClick = () => {
-    router.push(`/servers/${server.id}/conversations/${member.id}`);
+    router.push(`/conversations/${member.id}`);
   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

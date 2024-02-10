@@ -8,6 +8,7 @@ import { NavigationItem } from "./navigation-item";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { HomeAction } from "./home-action";
 export const NavigationSidebar = async () => {
   const profile = await CurrentProfile();
   if (!profile) {
@@ -25,7 +26,7 @@ export const NavigationSidebar = async () => {
 
   return (
     <div className="space-y-4 flex flex-col items-center h-full text-primary w-full bg-[#E3E5E8] dark:bg-[#1E1F22] py-3">
-      <NavigationAction />
+      <HomeAction/>
       <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
       <ScrollArea className="flex-1 w-full">
         {servers.map((server) => (
@@ -39,6 +40,7 @@ export const NavigationSidebar = async () => {
         ))}
       </ScrollArea>
       <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
+        <NavigationAction />
         <ThemeToggle />
         <UserButton
           afterSignOutUrl="/"

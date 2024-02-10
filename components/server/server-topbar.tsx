@@ -5,7 +5,7 @@ import { ServerSearch } from "./server-search";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { Crown, Hash, ShieldCheck, User, Video, Volume2 } from "lucide-react";
 import { CurrentProfile } from "@/lib/current-profile";
-import { ChatHeader } from "../chat/chat-header";
+import { ChatHeader } from "../conversations/chat-header";
 
 interface ServerTopbarProps {
   serverId: string;

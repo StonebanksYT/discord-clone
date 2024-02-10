@@ -117,7 +117,7 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         // open conversation and send message with value as the text
-                        router.push(`/servers/${server.id}/conversations/${member.id}`);
+                        router.push(`/conversations/${member.id}`);
                       }
                     }}
                     className="
