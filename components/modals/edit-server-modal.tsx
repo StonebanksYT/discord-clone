@@ -82,9 +82,9 @@ const formSchema = z.object({
   }),
 });
 const roleIconMap = {
-  ADMIN: <Crown className="h-8 w-8 ml-2 text-rose-500" />,
-  MODERATOR: <ShieldCheck className="h-8 w-8 ml-2 text-indigo-500" />,
-  GUEST: <User className="h-8 w-8 ml-2 text-gray-500" />,
+  ADMIN: <Crown className="h-6 w-6 ml-2 text-rose-500" />,
+  MODERATOR: <ShieldCheck className="h-6 w-6 ml-2 text-indigo-500" />,
+  GUEST: <User className="h-6 w-6 ml-2 text-gray-500" />,
 };
 
 interface MembersManagementProps {
@@ -129,38 +129,32 @@ const MembersManagement = ({ server }: MembersManagementProps) => {
     }
   };
   return (
-    <div className="">
+    <div className="border">
       <Table>
         <TableCaption>Manage Members in {server.name}</TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead className="text-right">Member Since</TableHead>
-          </TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Member Since</TableHead>
         </TableHeader>
         <TableBody>
           {server?.members?.map((member) => (
-            <TableRow
-              key={member.id}
-              className="flex items-center gap-x-2 mb-6"
-            >
-
-              <TableCell className="font-medium flex">
-              <UserAvatar src={member.profile.imageUrl} />
+            <TableRow key={member.id} className="">
+              <TableCell className="flex items-center gap-x-2">
+                <UserAvatar src={member.profile.imageUrl} />
                 {member.profile.name}
                 {roleIconMap[member.role]}
               </TableCell>
               <TableCell>{member.role}</TableCell>
               <TableCell>{member.createdAt.toUTCString()}</TableCell>
-              <TableCell className="w-full ml-auto">
+              <TableCell>
                 {server?.profileId !== member.profileId &&
                   loadingId !== member.id && (
                     <DropdownMenu>
                       <DropdownMenuTrigger className="ring-0 outline-none">
                         <MoreVertical className="h-6 w-6 dark:text-gray-500 text-black cursor-pointer" />
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side="left">
+                      <DropdownMenuContent side="right">
                         <DropdownMenuItem>
                           <User2 className="h-4 w-4 mr-2" />
                           Profile
@@ -354,13 +348,18 @@ export const EditServerModal = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center  w-full h-full">
+        <div className="flex flex-col items-center  w-full h-full">
           <DialogHeader className="pt-8 px-6">
-            <DialogTitle className="text-2xl text-start font-bold"></DialogTitle>
+            <DialogTitle className="text-2xl text-start font-bold">
+              {activeTab === 0 && "Server Overview"}
+              {activeTab === 1 && "Roles Management"}
+              {activeTab === 2 && "Channels Management"}
+              {activeTab === 3 && "Server Members"}
+            </DialogTitle>
           </DialogHeader>
 
           {activeTab === 0 && (
-            <div className="flex flex-row items-center justify-center w-full h-full">
+            <div className="flex flex-row  justify-center w-full h-full">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
@@ -429,7 +428,7 @@ export const EditServerModal = () => {
             </div>
           )}
           {activeTab === 3 && (
-            <div className="flex flex-row justify-center w-full h-full">
+            <div className="flex flex-col h-full mt-2">
               <MembersManagement
                 server={server as ServerWithMembersWithProfiles}
               />

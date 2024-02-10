@@ -5,6 +5,7 @@ import { ServerSearch } from "./server-search";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { Crown, Hash, ShieldCheck, User, Video, Volume2 } from "lucide-react";
 import { CurrentProfile } from "@/lib/current-profile";
+import { ChatHeader } from "../chat/chat-header";
 
 interface ServerTopbarProps {
   serverId: string;
@@ -65,50 +66,53 @@ const ServerTopbar = async ({ serverId }: ServerTopbarProps) => {
     return redirect("/");
   }
   return (
-    <div className="w-full h-full flex flex-row-reverse p-2 pr-[10px]">
-      <ServerSearch
-        data={[
-          {
-            label: "Text Channels",
-            type: "channel",
-            data: textChannels?.map((channel) => ({
-              id: channel.id,
-              name: channel.name,
-              icon: iconMap[channel.type],
-            })),
-          },
-          {
-            label: "Voice Channels",
-            type: "channel",
-            data: voiceChannels?.map((channel) => ({
-              id: channel.id,
-              name: channel.name,
-              icon: iconMap[channel.type],
-            })),
-          },
-          {
-            label: "Video Channels",
-            type: "channel",
-            data: videoChannels?.map((channel) => ({
-              id: channel.id,
-              name: channel.name,
-              icon: iconMap[channel.type],
-            })),
-          },
-          {
-            label: "Members",
-            type: "member",
-            data: members?.map((member) => ({
-              id: member.id,
-              name:
-                member.profile.id === profile.id
-                  ? `${member.profile.name} (You)`
-                  : member.profile.name,
-              icon: roleIconMap[member.role],
-            })),
-          },
-        ]}
-      />
+    <div className="flex flex-row w-full h-full">
+      <div className="w-full h-full flex flex-row-reverse p-2 pr-[10px] border-b-neutral-200 dark:border-b-neutral-800 border-b-2 ">
+        <ServerSearch
+          userid={profile.id}
+          data={[
+            {
+              label: "Text Channels",
+              type: "channel",
+              data: textChannels?.map((channel) => ({
+                id: channel.id,
+                name: channel.name,
+                icon: iconMap[channel.type],
+              })),
+            },
+            {
+              label: "Voice Channels",
+              type: "channel",
+              data: voiceChannels?.map((channel) => ({
+                id: channel.id,
+                name: channel.name,
+                icon: iconMap[channel.type],
+              })),
+            },
+            {
+              label: "Video Channels",
+              type: "channel",
+              data: videoChannels?.map((channel) => ({
+                id: channel.id,
+                name: channel.name,
+                icon: iconMap[channel.type],
+              })),
+            },
+            {
+              label: "Members",
+              type: "member",
+              data: members?.map((member) => ({
+                id: member.profile.id,
+                name:
+                  member.profile.id === profile.id
+                    ? `${member.profile.name} (You)`
+                    : member.profile.name,
+                icon: roleIconMap[member.role],
+              })),
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 };

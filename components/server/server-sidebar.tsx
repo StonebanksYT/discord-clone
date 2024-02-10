@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { ServerHeader } from "./server-header";
+import { ServerHeader } from "./server-sidebar-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ServerSection } from "./server-section";

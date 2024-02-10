@@ -12,6 +12,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 
 interface ServerSearchProps {
+  userid: string;
   data: {
     label: string;
     type: "channel" | "member";
@@ -25,7 +26,7 @@ interface ServerSearchProps {
   }[];
 }
 
-export const ServerSearch = ({ data }: ServerSearchProps) => {
+export const ServerSearch = ({ data, userid }: ServerSearchProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const params = useParams();
@@ -50,6 +51,7 @@ export const ServerSearch = ({ data }: ServerSearchProps) => {
   }) => {
     setOpen(false);
     if (type === "member") {
+      if (id === userid) return;
       router.push(`/servers/${params.serverId}/conversations/${id}`);
     }
     if (type === "channel") {
