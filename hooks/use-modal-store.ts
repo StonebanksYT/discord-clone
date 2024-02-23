@@ -13,6 +13,8 @@ export type ModalType =
   | "editChannel"
   | "deleteChannel"
   | "viewProfile"
+  | "messageFile"
+  | "deleteMessage"
 
 interface ModalData {
   server?: Server;
@@ -20,6 +22,8 @@ interface ModalData {
   channelType?: ChannelType;
   member?: MembersWithProfiles;
   profile?: Profile;
+  apiUrl?: string;
+  query?: Record<string, any>;
 }
 
 interface ModalStore {

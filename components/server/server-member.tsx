@@ -53,8 +53,10 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
         <DropdownMenuTrigger className="focus:outline-none" asChild>
           <div className="flex items-center gap-x-2  p-3 hover:dark:bg-[#36373d] cursor-pointer">
             <UserAvatar src={member.profile.imageUrl} />
-            <div className="text-xs font-semibold flex items-center">
-              {member.profile.name}
+            <div className=" font-semibold flex flex-row items-center  ">
+              <p className="text-xs truncate text-ellipsis ">
+                {member.profile.name}
+              </p>
               <ActionTooltip label={member.role}>{icon}</ActionTooltip>
             </div>
           </div>
@@ -82,7 +84,7 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
             />
           </div>
           <div className="p-4 h-full w-full">
-            <div className=" dark:text-white text-xl p-4 bg-white dark:bg-[#111214] font-bold text-black rounded-xl">
+            <div className=" dark:text-white text-xl p-4 bg-white dark:bg-[#111214] font-bold text-black rounded-xl over">
               {member.profile.name}
               <Separator />
               <Label className="uppercase font-bold text-xs mt-2">
@@ -117,7 +119,7 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         // open conversation and send message with value as the text
-                        router.push(`/conversations/${member.id}`);
+                        // router.push(`/conversations/${member.id}`); DIRECT MESSAGE 
                       }
                     }}
                     className="

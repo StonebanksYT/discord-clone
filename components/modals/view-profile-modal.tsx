@@ -10,7 +10,7 @@ import { ActionTooltip } from "../action-tooltip";
 import { Button } from "../ui/button";
 import { redirect, useRouter } from "next/navigation";
 
-export const ViewProfile = () => {
+export const ViewProfileModal = () => {
   const { data, isOpen, onClose } = useModal();
   const router = useRouter();
   const { member, profile, server } = data;
@@ -24,7 +24,7 @@ export const ViewProfile = () => {
     return redirect("/");
   }
   const onClick = () => {
-    router.push(`/conversations/${member.id}`);
+    // router.push(`/conversations/${member.id}`); direct message route
   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

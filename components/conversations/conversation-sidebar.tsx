@@ -13,6 +13,8 @@ export const ConversationSidebar = async () => {
   if (!profile) {
     return redirect("/");
   }
+
+  // NOT CONVERSATION BUT DIRECT MESSAGE NEW ROUTE AFTER SOCKETIO
   const conversations = await db.conversation.findMany({
     include: {
       directMessages: true,

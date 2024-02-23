@@ -16,16 +16,12 @@ const ConversationsLayout = async ({
   return (
     <div className="h-full">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
-        <ConversationSidebar/>
+        <ConversationSidebar />
       </div>
       <div className="hidden md:flex h-12 w-full z-10 pl-[312px] flex-col fixed right-0 inset-y-0 ">
-        <ConversationsTopbar/>
+        <ConversationsTopbar />
       </div>
-      <main className="h-full md:pl-60 mt-[50px]">{children}</main>
-      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed right-0  top-12 inset-y-0 border-l">
-        Active Now
-        {/* <MemberSidebar serverId={params.serverId} /> */}
-      </div>
+      <main className="h-full md:pl-60 pt-[50px]">{children}</main>
     </div>
   );
 };
