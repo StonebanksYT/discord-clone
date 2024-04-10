@@ -16,8 +16,21 @@ export const ConversationSidebar = async () => {
 
   // NOT CONVERSATION BUT DIRECT MESSAGE NEW ROUTE AFTER SOCKETIO
   const conversations = await db.conversation.findMany({
+    where: {
+      OR: [
+        {
+          memberOne: {
+            profileId: profile.id,
+          },
+        },
+        {
+          memberTwo: {
+            profileId: profile.id,
+          },
+        },
+      ],
+    },
     include: {
-      directMessages: true,
       memberOne: {
         include: {
           profile: true,
@@ -37,7 +50,7 @@ export const ConversationSidebar = async () => {
       <ScrollArea>
         {conversations.map((conversation) => {
           const otherMember =
-            conversation.memberOneId !== profile.id
+            conversation.memberOne.profileId === profile.id
               ? conversation.memberTwo
               : conversation.memberOne;
           return (

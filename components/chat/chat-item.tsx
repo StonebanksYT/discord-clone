@@ -40,6 +40,7 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
+  type: "channel" | "conversation";
 }
 
 const roleIconMap = {
@@ -63,6 +64,7 @@ export const ChatItem = ({
   isUpdated,
   socketUrl,
   socketQuery,
+  type,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
@@ -116,7 +118,6 @@ export const ChatItem = ({
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage =
     ["jpg", "jpeg", "png", "gif", "webp"].includes(fileType!) && fileUrl;
-
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full ">
       <div className="group flex gap-x-2 items-start w-full ">
@@ -129,9 +130,11 @@ export const ChatItem = ({
               <p className="font-semibold text-sm hover:underline cursor-pointer">
                 {member.profile.name}
               </p>
-              <ActionTooltip label={member.role}>
-                {roleIconMap[member.role]}
-              </ActionTooltip>
+              {type !== "conversation" && (
+                <ActionTooltip label={member.role}>
+                  {roleIconMap[member.role]}
+                </ActionTooltip>
+              )}
             </div>
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
               {timestamp}

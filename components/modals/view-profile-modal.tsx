@@ -18,13 +18,13 @@ export const ViewProfileModal = () => {
     return null;
   }
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/");
   }
   if (!server) {
     return redirect("/");
   }
   const onClick = () => {
-    // router.push(`/conversations/${member.id}`); direct message route
+    router.push(`/conversations/${member.id}`); 
   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

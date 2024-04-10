@@ -26,7 +26,7 @@ export const ConversationItem = ({
       onClick={onClick}
       className={cn(
         "flex items-center p-2 rounded-md cursor-pointer hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
-        params.memberId === id && "bg-zinc-700/20 dark:bg-zinc-700"
+        params?.memberId === id && "bg-zinc-700/20 dark:bg-zinc-700"
       )}
     >
       <img src={imageUrl} alt={name} className="w-10 h-10 rounded-full" />
