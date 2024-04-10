@@ -46,8 +46,10 @@ export const LeaveServerModal = () => {
             Leave {server?.name}
           </DialogTitle>
           <DialogDescription className="text-start dark:text-neutral-100">
-            Are you sure you want to leave {server?.name}? You won't be able to
-            rejoin unless you are re-invited.
+            <p>
+              Are you sure you want to leave {server?.name}? You won&#39;t be able
+              to rejoin unless you are re-invited.
+            </p>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex dark:bg-[#2b2d31] justify-end space-x-4 p-6">
