@@ -15,58 +15,24 @@ import { useOrigin } from "@/hooks/use-origin";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+import { Friend, FriendStatus, Profile } from "@prisma/client";
 
 export const InviteModal = () => {
-  const friends = [
-    {
-      id: "1",
-      name: "John Doe",
-      pfp: "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-    {
-      id: "2",
-      name: "Jane Doe",
-      pfp: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-    {
-      id: "3",
-      name: "John Smith",
-      pfp: "https://randomuser.me/api/portraits/men/2.jpg",
-    },
-    {
-      id: "4",
-      name: "Jane Smith",
-      pfp: "https://randomuser.me/api/portraits/women/2.jpg",
-    },
-    {
-      id: "5",
-      name: "Alice Johnson",
-      pfp: "https://randomuser.me/api/portraits/women/3.jpg",
-    },
-    {
-      id: "6",
-      name: "Bob Johnson",
-      pfp: "https://randomuser.me/api/portraits/men/3.jpg",
-    },
-    {
-      id: "7",
-      name: "Charlie Brown",
-      pfp: "https://randomuser.me/api/portraits/men/4.jpg",
-    },
-    {
-      id: "8",
-      name: "Diana Brown",
-      pfp: "https://randomuser.me/api/portraits/women/4.jpg",
-    },
-  ];
   const { isOpen, onOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
 
   const isModalOpen = isOpen && type === "invite";
-  const { server } = data;
+  const { profile, server } = data;
+  const [friends, setFriends] = useState<Profile[]>([]);
+
+
+  //TODO: Fetch friends
+
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -127,7 +93,7 @@ export const InviteModal = () => {
                 <div className="flex items-center gap-x-2">
                   <div className="w-10 h-10 bg-gray-500 rounded-full">
                     <img
-                      src={friend.pfp}
+                      src={friend.imageUrl}
                       alt={friend.name}
                       className="w-10 h-10 rounded-full"
                     />

@@ -24,7 +24,7 @@ export const ViewProfileModal = () => {
     return redirect("/");
   }
   const onClick = () => {
-    router.push(`/conversations/${member.id}`); 
+    router.push(`/conversations/${member.profile.id}`); 
   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -46,6 +46,7 @@ export const ViewProfileModal = () => {
             className="h-32 w-32 rounded-full"
             src={member.profile.imageUrl}
           />
+          
           {member.profile.id !== profile.id && (
             <Button
               onClick={() => {
@@ -61,7 +62,7 @@ export const ViewProfileModal = () => {
 
         <div className=" h-full w-full">
           <div className=" dark:text-white text-xl p-4 bg-white dark:bg-[#111214] font-bold text-black rounded-xl">
-            {member?.profile.name}
+            {member?.profile.name.replace(/null/g, "")}
             <Separator className="mt-2" />
             <div className="flex flex-col mt-2 gap-y-1">
               <Label className="uppercase font-bold text-xs mt-2">

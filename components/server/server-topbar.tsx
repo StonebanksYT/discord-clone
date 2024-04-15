@@ -105,8 +105,8 @@ const ServerTopbar = async ({ serverId }: ServerTopbarProps) => {
                 id: member.profile.id,
                 name:
                   member.profile.id === profile.id
-                    ? `${member.profile.name} (You)`
-                    : member.profile.name,
+                    ? `${member.profile.name.replace(/null/g, "")} (You)`
+                    : member.profile.name.replace(/null/g, ""),
                 icon: roleIconMap[member.role],
               })),
             },

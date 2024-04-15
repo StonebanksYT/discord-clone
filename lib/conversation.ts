@@ -20,17 +20,10 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
         AND: [{ memberOneId: memberOneId }, { memberTwoId: memberTwoId }],
       },
       include: {
-        memberOne: {
-          include: {
-            profile: true,
-          },
+        memberOne: true,
+        memberTwo: true,
         },
-        memberTwo: {
-          include: {
-            profile: true,
-          },
-        },
-      },
+      
     });
   } catch {
     return null;
@@ -45,16 +38,9 @@ const createConversation = async (memberOneId: string, memberTwoId: string) => {
         memberTwoId,
       },
       include: {
-        memberOne: {
-          include: {
-            profile: true,
-          },
-        },
-        memberTwo: {
-          include: {
-            profile: true,
-          },
-        },
+        memberOne: true,
+        memberTwo: true,
+        
       },
     });
   } catch {

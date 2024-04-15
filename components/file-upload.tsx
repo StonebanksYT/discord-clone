@@ -13,10 +13,10 @@ interface FileUploadProps {
 
 export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
   const fileType = value.split(".").pop();
-  if (value && fileType?.includes("jpg" || "jpeg" || "png" || "gif" || "webp")) {
+  if (value && fileType !== "pdf") {
     return (
-      <div className="relative h-20 w-20">
-        <Image fill src={value} alt="Upload" className="rounded-full" />
+      <div className="relative h-48 w-48">
+        <img src={value} alt="Upload" className="rounded-full" />
         <button
           onClick={() => onChange("")}
           className="absolute top-0 right-0 bg-rose-500 text-white rounded-full p-1 shadow-sm"
@@ -31,8 +31,13 @@ export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
     return (
       <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
         <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
-        <a href={value} target="_blank" rel="noopener noreferrer" className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline">
-        {value}
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
+        >
+          {value}
         </a>
         <button
           onClick={() => onChange("")}
@@ -42,7 +47,8 @@ export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
           <X className="h-4 w-4" />
         </button>
       </div>
-    );}
+    );
+  }
   return (
     <div className="flex">
       <UploadDropzone

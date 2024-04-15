@@ -142,7 +142,7 @@ const MembersManagement = ({ server }: MembersManagementProps) => {
             <TableRow key={member.id} className="">
               <TableCell className="flex items-center gap-x-2">
                 <UserAvatar src={member.profile.imageUrl} />
-                {member.profile.name}
+                {member.profile.name.replace(/null/g, "")}
                 {roleIconMap[member.role]}
               </TableCell>
               <TableCell>{member.role}</TableCell>
@@ -202,7 +202,7 @@ const MembersManagement = ({ server }: MembersManagementProps) => {
                           className="text-rose-500"
                         >
                           <Gavel className="h-4 w-4 mr-2" />
-                          Kick {member.profile.name}
+                          Kick {member.profile.name.replace(/null/g, "")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -373,11 +373,13 @@ export const EditServerModal = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <FileUpload
-                                endpoint="serverImage"
-                                value={field.value}
-                                onChange={field.onChange}
-                              />
+                              <div>
+                                <FileUpload
+                                  endpoint="serverImage"
+                                  value={field.value}
+                                  onChange={(value) => field.onChange(value)}
+                                />
+                              </div>
                             </FormControl>
                           </FormItem>
                         )}

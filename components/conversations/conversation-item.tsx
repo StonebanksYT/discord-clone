@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Member } from "@prisma/client";
+import { Profile } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 interface ConversationItemProps {
   id: string;
   imageUrl: string;
   name: string;
-  member: Member;
+  member: Profile;
 }
 
 export const ConversationItem = ({
@@ -31,7 +31,9 @@ export const ConversationItem = ({
     >
       <img src={imageUrl} alt={name} className="w-10 h-10 rounded-full" />
       <div className="ml-3">
-        <p className="text-sm font-semibold dark:text-white">{name}</p>
+        <p className="text-sm font-semibold dark:text-white">
+          {name.replace(/null/g, "")}
+        </p>
       </div>
     </div>
   );

@@ -28,14 +28,10 @@ export async function GET(req: Request) {
           id: cursor,
         },
         where: {
-          conversationId
+          conversationId,
         },
         include: {
-          member: {
-            include: {
-              profile: true,
-            },
-          },
+          profile: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -45,14 +41,10 @@ export async function GET(req: Request) {
       messages = await db.directMessage.findMany({
         take: MESSAGES_BATCH,
         where: {
-          conversationId
+          conversationId,
         },
         include: {
-          member: {
-            include: {
-              profile: true,
-            },
-          },
+          profile: true,
         },
         orderBy: {
           createdAt: "desc",

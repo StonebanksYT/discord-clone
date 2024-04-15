@@ -55,7 +55,7 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
             <UserAvatar src={member.profile.imageUrl} />
             <div className=" font-semibold flex flex-row items-center  ">
               <p className="text-xs truncate text-ellipsis ">
-                {member.profile.name}
+                {member.profile.name.replace(/null/g, "")}
               </p>
               <ActionTooltip label={member.role}>{icon}</ActionTooltip>
             </div>
@@ -85,7 +85,7 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
           </div>
           <div className="p-4 h-full w-full">
             <div className=" dark:text-white text-xl p-4 bg-white dark:bg-[#111214] font-bold text-black rounded-xl over">
-              {member.profile.name}
+              {member.profile.name.replace(/null/g, "")}
               <Separator />
               <Label className="uppercase font-bold text-xs mt-2">
                 About Me
@@ -119,12 +119,12 @@ export const ServerMember = ({ server, index, profile }: ServerMemberProps) => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         // open conversation and send message with value as the text
-                        // router.push(`/conversations/${member.id}`); DIRECT MESSAGE 
+                        // router.push(`/conversations/${member.id}`); DIRECT MESSAGE
                       }
                     }}
                     className="
                   dark:bg-[#111214] text-white border dark:border-white border-black focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder={`Message @${member.profile.name}`}
+                    placeholder={`Message @${member.profile.name.replace(/null/g, "")}`}
                   />
                 </div>
               )}

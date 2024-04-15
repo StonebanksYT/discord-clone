@@ -7,30 +7,28 @@ import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment, useRef, ElementRef } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
-import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { useDirectChatSocket } from "@/hooks/use-direct-chat-socket";
+import { DirectChatItem } from "./direct-chat-item";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
-type MessageWithMemberWithProfile = Message & {
-  member: Member & {
-    profile: Profile;
-  };
+type MessageWithProfile = Message & {
+  profile: Profile;
 };
 
-interface ChatMessagesProps {
+interface DirectChatMessagesProps {
   name: string;
-  member: Member;
+  member: Profile;
   chatId: string;
   apiUrl: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  paramKey: "channelId" | "conversationId";
+  paramKey: "conversationId";
   paramValue: string;
-  type: "channel" | "conversation";
 }
 
-export const ChatMessages = ({
+export const DirectChatMessages = ({
   name,
   member,
   chatId,
@@ -39,8 +37,7 @@ export const ChatMessages = ({
   socketQuery,
   paramKey,
   paramValue,
-  type,
-}: ChatMessagesProps) => {
+}: DirectChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
@@ -55,7 +52,7 @@ export const ChatMessages = ({
       paramKey,
       paramValue,
     });
-  useChatSocket({
+  useDirectChatSocket({
     queryKey,
     addKey,
     updateKey,
@@ -92,7 +89,9 @@ export const ChatMessages = ({
   return (
     <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
       {!hasNextPage && <div className="flex-1" />}
-      {!hasNextPage && <ChatWelcome type={type} name={name.replace(/null/g, "")} />}
+      {!hasNextPage && (
+        <ChatWelcome type={"conversation"} name={name.replace(/null/g, "")} />
+      )}
       {hasNextPage && (
         <div className="flex justify-center ">
           {isFetchingNextPage ? (
@@ -110,12 +109,12 @@ export const ChatMessages = ({
       <div className="flex flex-col-reverse mt-auto">
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group.items.map((message: MessageWithMemberWithProfile) => (
-              <ChatItem
+            {group.items.map((message: MessageWithProfile) => (
+              <DirectChatItem
                 key={message.id}
                 id={message.id}
                 currentMember={member}
-                member={message.member}
+                member={message.profile}
                 content={message.content}
                 fileUrl={message.fileUrl}
                 deleted={message.deleted}
@@ -123,7 +122,6 @@ export const ChatMessages = ({
                 isUpdated={message.updatedAt !== message.createdAt}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}
-                type={type}
               />
             ))}
           </Fragment>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
+import { RoomServiceClient, Room } from "livekit-server-sdk";
 import "@livekit/components-styles";
 import { Channel } from "@prisma/client";
 import { useUser } from "@clerk/nextjs";
@@ -16,6 +17,10 @@ interface MediaRoomProps {
 export const MediaRoom = ({ chatId, video, voice }: MediaRoomProps) => {
   const { user } = useUser();
   const [token, setToken] = useState("");
+  const livekitHost = "wss://discord-clone-hd57fka7.livekit.cloud";
+  const apiKey = process.env.LIVEKIT_API_KEY!;
+  const secret = process.env.LIVEKIT_API_SECRET!;
+  const roomService = new RoomServiceClient(livekitHost, apiKey, secret);
 
   useEffect(() => {
     if (!user?.firstName || !user?.lastName) return;
@@ -33,6 +38,16 @@ export const MediaRoom = ({ chatId, video, voice }: MediaRoomProps) => {
         console.log(error);
       }
     })();
+    const fetchParticipants = async () => {
+      try {
+        const res = await roomService.listParticipants(chatId);
+        console.log("room service", res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchParticipants();
   }, [user?.firstName, user?.lastName, chatId]);
 
   if (!token) {

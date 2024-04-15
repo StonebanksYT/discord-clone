@@ -112,7 +112,7 @@ export const MembersModal = () => {
               <UserAvatar src={member.profile.imageUrl} />
               <div className="flex flex-col gap-y-1">
                 <div className="text-xs font-semibold flex items-center">
-                  {member.profile.name}
+                  {member.profile.name.replace(/null/g, "")}
                   {roleIconMap[member.role]}
                 </div>
                 <div className="text-xs dark:text-gray-500 text-black">
@@ -173,7 +173,7 @@ export const MembersModal = () => {
                           className="text-rose-500"
                         >
                           <Gavel className="h-4 w-4 mr-2" />
-                          Kick {member.profile.name}
+                          Kick {member.profile.name.replace(/null/g, "")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

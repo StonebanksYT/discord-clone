@@ -27,34 +27,27 @@ export default async function handler(
         OR: [
           {
             memberOne: {
-              profileId: profile.id,
+              id: profile.id,
             },
           },
           {
             memberTwo: {
-              profileId: profile.id,
+              id: profile.id,
             },
           },
         ],
       },
       include: {
-        memberOne: {
-          include: {
-            profile: true,
-          },
-        },
-        memberTwo: {
-          include: {
-            profile: true,
-          },
-        },
+        memberOne: true,
+        
+        memberTwo:true
       },
     });
     if (!conversation) {
       return res.status(404).json({ error: "Conversation not found" });
     }
     const member =
-      conversation.memberOne.profileId === profile.id
+      conversation.memberOne.id === profile.id
         ? conversation.memberOne
         : conversation.memberTwo;
     if (!member) {
@@ -65,21 +58,17 @@ export default async function handler(
         id: directMessageId as string,
         conversationId: conversationId as string,
       },
-      include: {
-        member: {
-          include: {
-            profile: true,
-          },
-        },
+      include:{
+        profile:true,
       },
     });
+
     if (!directMessage || directMessage.deleted) {
       return res.status(404).json({ error: "Message not found" });
     }
-    const isMessageOwner = directMessage.memberId === member.id;
-    const isAdmin = member.role === MemberRole.ADMIN;
-    const isModerator = member.role === MemberRole.MODERATOR;
-    const canModify = isMessageOwner || isAdmin || isModerator;
+    const isMessageOwner = directMessage.profileId === member.id;
+
+    const canModify = isMessageOwner;
     if (!canModify) {
       return res.status(403).json({ error: "Forbidden" });
     }
@@ -94,11 +83,7 @@ export default async function handler(
           deleted: true,
         },
         include: {
-          member: {
-            include: {
-              profile: true,
-            },
-          },
+          profile: true,
         },
       });
     }
@@ -114,11 +99,7 @@ export default async function handler(
           content,
         },
         include: {
-          member: {
-            include: {
-              profile: true,
-            },
-          },
+          profile: true,
         },
       });
     }

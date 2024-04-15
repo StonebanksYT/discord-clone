@@ -5,9 +5,10 @@ import { MediaRoom } from "@/components/media-room";
 import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
-import { ChannelType } from "@prisma/client";
+import { ChannelType, Profile } from "@prisma/client";
 import { redirect } from "next/navigation";
 import React from "react";
+import MemberSidebar from "@/components/server/server-member-sidebar";
 
 interface ChannelIdPageProps {
   params: {
@@ -17,6 +18,11 @@ interface ChannelIdPageProps {
 }
 
 const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  // const apiKey = process.env.LIVEKIT_API_KEY;
+  // const secret = process.env.LIVEKIT_API_SECRET;
+  // const livekitHost = "https://my.livekit.host";
+  // const roomService = new RoomServiceClient(livekitHost, apiKey, secret);
+
   const profile = await CurrentProfile();
   if (!profile) {
     return redirectToSignIn();
@@ -67,10 +73,15 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
             apiUrl="/api/socket/messages"
             query={{ channelId: channel.id, serverId: channel.serverId }}
           />
+          <div className="hidden md:flex h-full md:w-44 lg:w-60 xl:w-60 z-20 flex-col fixed right-0  top-12 inset-y-0">
+            <MemberSidebar serverId={params.serverId} />
+          </div>
         </>
       )}
       {channel.type === ChannelType.VOICE && (
-        <MediaRoom chatId={channel.id} video={false} voice={true} />
+        <div className="h-full w-full lg:w-[60vw] xl:w-[78vw] 2xl:w-[82vw]">
+          <MediaRoom chatId={channel.id} video={false} voice={true} />
+        </div>
       )}
       {channel.type === ChannelType.VIDEO && (
         <MediaRoom chatId={channel.id} video={true} voice={false} />

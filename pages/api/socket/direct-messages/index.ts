@@ -31,34 +31,29 @@ export default async function handler(
         OR: [
           {
             memberOne: {
-              profileId: profile.id,
+              id: profile.id,
             },
           },
           {
             memberTwo: {
-              profileId: profile.id,
+              id: profile.id,
             },
           },
         ],
       },
       include: {
-        memberOne: {
-          include: {
-            profile: true,
-          },
-        },
-        memberTwo: {
-          include: {
-            profile: true,
-          },
-        },
+        memberOne: true,
+        memberTwo: true,
       },
     });
     if (!conversation) {
       return res.status(404).json({ message: "Conversation not found" });
     }
-    const member = conversation.memberOne.profileId === profile.id ? conversation.memberOne : conversation.memberTwo;
-    
+    const member =
+      conversation.memberOne.id === profile.id
+        ? conversation.memberOne
+        : conversation.memberTwo;
+
     if (!member) {
       return res.status(404).json({ message: "Member not found" });
     }
@@ -67,14 +62,10 @@ export default async function handler(
         content,
         fileUrl,
         conversationId: conversationId as string,
-        memberId: member.id,
+        profileId: member.id,
       },
       include: {
-        member: {
-          include: {
-            profile: true,
-          },
-        },
+        profile: true,
       },
     });
 
