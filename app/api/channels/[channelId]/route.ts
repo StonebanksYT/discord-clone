@@ -2,7 +2,7 @@ import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { MemberRole } from "@prisma/client";
 import { NextResponse } from "next/server";
-export const runtime = "edge";
+
 export async function PATCH(
   req: Request,
   { params }: { params: { channelId: string } }

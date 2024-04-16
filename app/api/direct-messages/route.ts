@@ -4,7 +4,7 @@ import { DirectMessage } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const MESSAGES_BATCH = 20;
-export const runtime = 'edge';
+
 export async function GET(req: Request) {
   try {
     const profile = await CurrentProfile();

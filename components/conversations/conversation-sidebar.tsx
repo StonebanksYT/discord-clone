@@ -39,7 +39,7 @@ export const ConversationSidebar = async () => {
     console.log("Conversations not found");
   }
   return (
-    <div className="flex flex-col h-full px-2 text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
+    <div className="flex flex-col h-full p-2 text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       <div className="h-12 w-full z-10">
         <ConversationTopbar />
       </div>
