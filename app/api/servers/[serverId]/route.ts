@@ -1,7 +1,7 @@
 import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-
+export const runtime = 'edge';
 export async function DELETE(
   req: Request,
   { params }: { params: { serverId: string } }

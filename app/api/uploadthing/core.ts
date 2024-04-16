@@ -3,7 +3,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
-
+export const runtime = 'edge';
 const handleAuth = () => {
   const { userId } = auth();
   if (!userId) throw new Error("Unauthorized");

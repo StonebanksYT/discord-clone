@@ -2,7 +2,7 @@ import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { Message } from "@prisma/client";
 import { NextResponse } from "next/server";
-
+export const runtime = 'edge';
 const MESSAGES_BATCH = 20;
 
 export async function GET(req: Request) {

@@ -2,7 +2,7 @@ import { CurrentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { FriendStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
-
+export const runtime = 'edge';
 export async function GET(req: Request) {
   try {
     const profile = await CurrentProfile();
