@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { NextApiResponseServerIo } from "@/types";
 import { MemberRole } from "@prisma/client";
 import { NextApiRequest } from "next";
-export const runtime = 'edge';
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIo
